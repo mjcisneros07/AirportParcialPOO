@@ -4,8 +4,7 @@
  */
 package airport.models;
 
-import airport.models.Passenger;
-import airport.models.Plane;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -103,14 +102,6 @@ public class Flight {
 
     public void setDepartureDate(LocalDateTime departureDate) {
         this.departureDate = departureDate;
-    }
-    
-    public LocalDateTime calculateArrivalDate() {
-        return departureDate.plusHours(hoursDurationScale).plusHours(hoursDurationArrival).plusMinutes(minutesDurationScale).plusMinutes(minutesDurationArrival);
-    }
-    
-    public void delay(int hours, int minutes) {
-        this.departureDate = this.departureDate.plusHours(hours).plusMinutes(minutes);
     }
     
     public int getNumPassengers() {
