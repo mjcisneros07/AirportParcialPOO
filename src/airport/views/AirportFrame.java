@@ -8,6 +8,7 @@ import airport.models.Location;
 import airport.models.Flight;
 import airport.models.Passenger;
 import airport.models.Plane;
+import airport.services.FlightService;
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.Color;
 import java.time.LocalDate;
@@ -1597,7 +1598,7 @@ public class AirportFrame extends javax.swing.JFrame {
             }
         }
 
-        flight.delay(hours, minutes);
+        FlightService.delay(flight,hours, minutes);
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -1615,7 +1616,7 @@ public class AirportFrame extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
         for (Flight flight : flights) {
-            model.addRow(new Object[]{flight.getId(), flight.getDepartureDate(), flight.calculateArrivalDate()});
+            model.addRow(new Object[]{flight.getId(), flight.getDepartureDate(), FlightService.calculateArrivalDate(flight)});
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -1633,7 +1634,7 @@ public class AirportFrame extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
         model.setRowCount(0);
         for (Flight flight : this.flights) {
-            model.addRow(new Object[]{flight.getId(), flight.getDepartureLocation().getAirportId(), flight.getArrivalLocation().getAirportId(), (flight.getScaleLocation() == null ? "-" : flight.getScaleLocation().getAirportId()), flight.getDepartureDate(), flight.calculateArrivalDate(), flight.getPlane().getId(), flight.getNumPassengers()});
+            model.addRow(new Object[]{flight.getId(), flight.getDepartureLocation().getAirportId(), flight.getArrivalLocation().getAirportId(), (flight.getScaleLocation() == null ? "-" : flight.getScaleLocation().getAirportId()), flight.getDepartureDate(), FlightService.calculateArrivalDate(flight), flight.getPlane().getId(), flight.getNumPassengers()});
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
