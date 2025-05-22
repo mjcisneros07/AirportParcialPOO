@@ -4,13 +4,14 @@
  */
 package airport.models;
 
+import airport.models.utils.Prototype;
 import java.util.ArrayList;
 
 /**
  *
  * @author edangulo
  */
-public class Plane {
+public class Plane implements Prototype<Plane>{
     
     private final String id;
     private String brand;
@@ -58,6 +59,13 @@ public class Plane {
     
     public int getNumFlights() {
         return flights.size();
+    }
+    
+    @Override
+    public Plane clone(){
+        Plane cloned = new Plane (this.id, this.brand,this.model,this.maxCapacity,this.airline);
+        cloned.flights = new ArrayList<>(this.flights);
+        return cloned;
     }
     
 }

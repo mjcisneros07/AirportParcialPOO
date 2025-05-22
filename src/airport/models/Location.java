@@ -4,11 +4,13 @@
  */
 package airport.models;
 
+import airport.models.utils.Prototype;
+
 /**
  *
  * @author edangulo
  */
-public class Location {
+public class Location implements Prototype<Location>{
     
     private final String airportId;
     private String airportName;
@@ -50,4 +52,9 @@ public class Location {
         return airportLongitude;
     }
     
+    @Override
+    public Location clone(){
+        Location cloned = new Location (this.airportId, this.airportName, this.airportCity, this.airportCountry,this.airportLatitude, this.airportLongitude);
+        return cloned;
+    }
 }

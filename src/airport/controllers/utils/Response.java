@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package airport.controllers.utils;
-
+import airport.models.utils.Prototype;
 /**
  *
  * @author cisne
@@ -20,7 +20,12 @@ public class Response {
     public Response(String message, int status, Object object) {
         this.message = message;
         this.status = status;
-        this.object = object;
+        if (object instanceof Prototype) {
+            Prototype<?> prototype = (Prototype<?>) object;
+            this.object = prototype.clone();
+        } else {
+            this.object = object;
+        }
     }
 
     public String getMessage() {

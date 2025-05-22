@@ -8,7 +8,7 @@ import airport.models.Location;
 import airport.models.Flight;
 import airport.models.Passenger;
 import airport.models.Plane;
-import airport.services.FlightService;
+import airport.models.services.FlightService;
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.Color;
 import java.time.LocalDate;

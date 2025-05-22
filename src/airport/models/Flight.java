@@ -4,7 +4,7 @@
  */
 package airport.models;
 
-
+import airport.models.utils.Prototype;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -12,8 +12,8 @@ import java.util.ArrayList;
  *
  * @author edangulo
  */
-public class Flight {
-    
+public class Flight implements Prototype<Flight> {
+
     private final String id;
     private ArrayList<Passenger> passengers;
     private Plane plane;
@@ -25,7 +25,6 @@ public class Flight {
     private int minutesDurationArrival;
     private int hoursDurationScale;
     private int minutesDurationScale;
-    
 
     public Flight(String id, Plane plane, Location departureLocation, Location arrivalLocation, LocalDateTime departureDate, int hoursDurationArrival, int minutesDurationArrival) {
         this.id = id;
@@ -36,7 +35,7 @@ public class Flight {
         this.departureDate = departureDate;
         this.hoursDurationArrival = hoursDurationArrival;
         this.minutesDurationArrival = minutesDurationArrival;
-        
+
         this.plane.addFlight(this);
     }
 
@@ -52,14 +51,14 @@ public class Flight {
         this.minutesDurationArrival = minutesDurationArrival;
         this.hoursDurationScale = hoursDurationScale;
         this.minutesDurationScale = minutesDurationScale;
-        
+
         this.plane.addFlight(this);
     }
-    
+
     public void addPassenger(Passenger passenger) {
         this.passengers.add(passenger);
     }
-    
+
     public String getId() {
         return id;
     }
@@ -103,9 +102,26 @@ public class Flight {
     public void setDepartureDate(LocalDateTime departureDate) {
         this.departureDate = departureDate;
     }
-    
+
     public int getNumPassengers() {
         return passengers.size();
     }
-    
+
+    @Override
+    public Flight clone() {
+        Flight cloned;
+        if (scaleLocation == null) {
+            cloned = new Flight(this.id, this.plane, this.departureLocation, this.arrivalLocation, this.departureDate, this.hoursDurationArrival, this.minutesDurationArrival);
+        } else {
+            cloned = new Flight(this.id, this.plane, this.departureLocation, this.scaleLocation, this.arrivalLocation,this.departureDate, this.hoursDurationArrival, this.minutesDurationArrival, this.hoursDurationScale, this.minutesDurationScale);
+        }
+
+        // Copiamos la lista de pasajeros (solo referencias, no clones)
+        for (Passenger p : this.passengers) {
+            cloned.addPassenger(p);
+        }
+
+        return cloned;
+    }
+
 }

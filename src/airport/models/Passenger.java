@@ -4,6 +4,7 @@
  */
 package airport.models;
 
+import airport.models.utils.Prototype;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author edangulo
  */
-public class Passenger {
+public class Passenger implements Prototype<Passenger>{
     
     private final long id;
     private String firstname;
@@ -110,4 +111,10 @@ public class Passenger {
         return flights.size();
     }
     
+    @Override
+    public Passenger clone(){
+        Passenger cloned = new Passenger (this.id, this.firstname, this.lastname ,this.birthDate,this.countryPhoneCode, this.phone, this.country);
+        cloned.flights = new ArrayList<>(this.flights);
+        return cloned;
+    }
 }
