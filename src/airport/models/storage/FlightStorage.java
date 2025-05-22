@@ -8,30 +8,25 @@ import airport.models.Flight;
 import airport.models.Location;
 import airport.models.Passenger;
 import airport.models.Plane;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
  *
  * @author cisne
  */
-public final class Storage {
+public class FlightStorage {
     private ArrayList<Flight> flights;
-    private ArrayList<Location> locations;
-    private ArrayList<Passenger> passengers;
-    private ArrayList<Plane> planes;
     
-    private static Storage instance;
+    private static FlightStorage instance;
     
-    private Storage (){
+    private FlightStorage (){
         this.flights = new ArrayList<>();
-        this.locations = new ArrayList<>();
-        this.passengers = new ArrayList<>();
-        this.planes = new ArrayList<>();
     }
     
-    public static Storage getInstance() {
+    public static FlightStorage getInstance() {
         if (instance == null){
-            instance = new Storage();
+            instance = new FlightStorage();
         }
         return instance;
     }
@@ -44,5 +39,23 @@ public final class Storage {
         }
         this.flights.add(flight);
         return true;
+    }
+    public Flight getFlight (String id){
+        for (Flight f: this.flights){
+            if (f.getId() == id){
+                return f;
+            }
+        }
+        return null;
+    }
+    
+    public boolean removeFlight(String id){
+        for (Flight f: this.flights){
+            if (f.getId() == id){
+                this.flights.remove(f);
+                return true;
+            }
+        }
+        return false;
     }
 }
