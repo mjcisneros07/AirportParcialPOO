@@ -55,4 +55,12 @@ public class PlaneStorage {
         }
         return null;
     }
+    public boolean exists(String id) {
+        for (Plane p : this.planes) {
+            if (p.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

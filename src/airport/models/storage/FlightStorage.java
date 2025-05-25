@@ -58,4 +58,12 @@ public class FlightStorage {
         }
         return false;
     }
+    public boolean exists(String id) {
+        for (Flight f : this.flights) {
+            if (f.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

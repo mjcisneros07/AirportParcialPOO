@@ -55,4 +55,13 @@ public class PassengerStorage {
         }
         return false;
     }
+    
+    public boolean exists(long id) {
+        for (Passenger p : this.passengers) {
+            if (p.getId() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
