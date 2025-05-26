@@ -4,6 +4,9 @@
  */
 package airport.views;
 
+import airport.controllers.PassengerController;
+import airport.controllers.utils.Response;
+import airport.controllers.utils.Status;
 import airport.loaders.FlightLoader;
 import airport.loaders.LocationLoader;
 import airport.loaders.PassengerLoader;
@@ -44,6 +47,13 @@ public class AirportFrame extends javax.swing.JFrame {
         this.planes = PlaneLoader.loadPlanes("data/Planes.json");
         this.locations = LocationLoader.loadLocations("data/Locations.json");
         this.flights = FlightLoader.loadFlights("data/Flights.json", planes, locations);
+
+        userSelect.removeAllItems();
+        userSelect.addItem("Select User");
+        for (Passenger p : this.passengers) {
+            userSelect.addItem(Long.toString(p.getId()));
+        }
+        
 
         this.setBackground(new Color(0, 0, 0, 0));
         this.setLocationRelativeTo(null);
@@ -1425,20 +1435,33 @@ public class AirportFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_administratorActionPerformed
 
     private void userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userActionPerformed
-        if (administrator.isSelected()) {
-            administrator.setSelected(false);
-        }
-        for (int i = 1; i < jTabbedPane1.getTabCount(); i++) {
+        String seleccion = userSelect.getSelectedItem().toString();
+        Response response = PassengerController.changeUser(seleccion);
+        if (response.getStatus() == Status.NOT_FOUND) {
+            JOptionPane.showMessageDialog(this, "Debe elegir un usuario primero", "Error " + Status.NOT_FOUND, JOptionPane.WARNING_MESSAGE);
+            setUserSelected(false);
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuario elegido", "Información", JOptionPane.INFORMATION_MESSAGE);
+            setUserSelected(true);
 
-            jTabbedPane1.setEnabledAt(i, false);
-
+            if (administrator.isSelected()) {
+                administrator.setSelected(false);
+            }
+            for (int i = 1; i < jTabbedPane1.getTabCount(); i++) {
+                jTabbedPane1.setEnabledAt(i, false);
+            }
+            jTabbedPane1.setEnabledAt(9, true);
+            jTabbedPane1.setEnabledAt(5, true);
+            jTabbedPane1.setEnabledAt(6, true);
+            jTabbedPane1.setEnabledAt(7, true);
+            jTabbedPane1.setEnabledAt(11, true);
         }
-        jTabbedPane1.setEnabledAt(9, true);
-        jTabbedPane1.setEnabledAt(5, true);
-        jTabbedPane1.setEnabledAt(6, true);
-        jTabbedPane1.setEnabledAt(7, true);
-        jTabbedPane1.setEnabledAt(11, true);
     }//GEN-LAST:event_userActionPerformed
+
+    // Método para cambiar el estado del botón
+    private void setUserSelected(boolean selected) {
+        user.setSelected(selected);
+    }
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
@@ -1680,11 +1703,10 @@ public class AirportFrame extends javax.swing.JFrame {
     private void userSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userSelectActionPerformed
         try {
             String id = userSelect.getSelectedItem().toString();
-            if (! id.equals(userSelect.getItemAt(0))) {
+            if (!id.equals(userSelect.getItemAt(0))) {
                 jTextField20.setText(id);
                 jTextField28.setText(id);
-            }
-            else{
+            } else {
                 jTextField20.setText("");
                 jTextField28.setText("");
             }
