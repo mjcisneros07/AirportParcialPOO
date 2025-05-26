@@ -17,7 +17,9 @@ import airport.models.storage.LocationStorage;
 import airport.models.storage.PassengerStorage;
 import airport.models.storage.PlaneStorage;
 import airport.views.AirportFrame;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -63,5 +65,44 @@ public class AirportController {
     public static List<Flight> getFlightsOfPassenger(long passengerId) {
         Passenger p = PassengerService.findById(passengerId);
         return (p != null) ? p.getFlights() : new ArrayList<>();
+    }
+
+    public static List<Object[]> getFlightTableDataForPassenger(long passengerId) {
+        Passenger passenger = PassengerService.findById(passengerId); // Si tienes un servicio, mejor
+        if (passenger == null) {
+            return Collections.emptyList();
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        List<Object[]> rowData = new ArrayList<>();
+
+        for (Flight flight : passenger.getFlights()) {
+            rowData.add(new Object[]{
+                flight.getId(),
+                flight.getDepartureDate().format(formatter),
+                FlightService.calculateArrivalDate(flight).format(formatter)
+            });
+        }
+
+        return rowData;
+    }
+
+    public static List<Object[]> getAllPassengersTableData() {
+        List<Passenger> passengers = AirportController.getPassengersOrderedById(); // Usas tu método ya existente
+        List<Object[]> data = new ArrayList<>();
+
+        for (Passenger p : passengers) {
+            data.add(new Object[]{
+                p.getId(),
+                p.getFullname(),
+                p.getBirthDate(),
+                p.calculateAge(),
+                p.generateFullPhone(),
+                p.getCountry(),
+                p.getNumFlights()
+            });
+        }
+
+        return data;
     }
 }

@@ -1,110 +1,110 @@
 [
     {
-        "id": 158484546,
-        "firstname": "Carlos",
-        "lastname": "Gomez",
-        "birthDate": "1990-04-15",
+        "firstName": "Carlos",
+        "lastName": "Gomez",
+        "country": "Spain",
         "countryPhoneCode": 34,
         "phone": 612345678,
-        "country": "Spain"
+        "id": 158484546,
+        "birthDate": "1990-04-15"
     },
     {
-        "id": 28171784,
-        "firstname": "Anna",
-        "lastname": "Muller",
-        "birthDate": "1985-07-23",
+        "firstName": "Anna",
+        "lastName": "Muller",
+        "country": "Germany",
         "countryPhoneCode": 49,
         "phone": 1712345678,
-        "country": "Germany"
+        "id": 28171784,
+        "birthDate": "1985-07-23"
     },
     {
-        "id": 314747359,
-        "firstname": "Lucas",
-        "lastname": "Silva",
-        "birthDate": "1992-11-09",
+        "firstName": "Lucas",
+        "lastName": "Silva",
+        "country": "Brazil",
         "countryPhoneCode": 55,
         "phone": 21987654321,
-        "country": "Brazil"
+        "id": 314747359,
+        "birthDate": "1992-11-09"
     },
     {
-        "id": 487895962,
-        "firstname": "Emily",
-        "lastname": "Clark",
-        "birthDate": "1995-03-02",
+        "firstName": "Emily",
+        "lastName": "Clark",
+        "country": "United Kingdom",
         "countryPhoneCode": 44,
         "phone": 7423456789,
-        "country": "United Kingdom"
+        "id": 487895962,
+        "birthDate": "1995-03-02"
     },
     {
-        "id": 59100541,
-        "firstname": "Jean",
-        "lastname": "Dupont",
-        "birthDate": "1980-01-14",
+        "firstName": "Jean",
+        "lastName": "Dupont",
+        "country": "France",
         "countryPhoneCode": 33,
         "phone": 612345678,
-        "country": "France"
+        "id": 59100541,
+        "birthDate": "1980-01-14"
     },
     {
-        "id": 60005416,
-        "firstname": "Aiko",
-        "lastname": "Tanaka",
-        "birthDate": "1993-08-30",
+        "firstName": "Aiko",
+        "lastName": "Tanaka",
+        "country": "Japan",
         "countryPhoneCode": 81,
         "phone": 9012345678,
-        "country": "Japan"
+        "id": 60005416,
+        "birthDate": "1993-08-30"
     },
     {
-        "id": 711845991,
-        "firstname": "David",
-        "lastname": "Smith",
-        "birthDate": "1988-05-10",
+        "firstName": "David",
+        "lastName": "Smith",
+        "country": "USA",
         "countryPhoneCode": 1,
         "phone": 2025550173,
-        "country": "USA"
+        "id": 711845991,
+        "birthDate": "1988-05-10"
     },
     {
-        "id": 897441369,
-        "firstname": "Sofia",
-        "lastname": "Martinez",
-        "birthDate": "1999-12-22",
+        "firstName": "Sofia",
+        "lastName": "Martinez",
+        "country": "Mexico",
         "countryPhoneCode": 52,
         "phone": 5551234567,
-        "country": "Mexico"
+        "id": 897441369,
+        "birthDate": "1999-12-22"
     },
     {
-        "id": 988415236,
-        "firstname": "Ivan",
-        "lastname": "Petrov",
-        "birthDate": "1983-06-05",
+        "firstName": "Ivan",
+        "lastName": "Petrov",
+        "country": "Russia",
         "countryPhoneCode": 7,
         "phone": 9123456789,
-        "country": "Russia"
+        "id": 988415236,
+        "birthDate": "1983-06-05"
     },
     {
-        "id": 10874584,
-        "firstname": "Fatima",
-        "lastname": "El Amrani",
-        "birthDate": "1991-09-18",
+        "firstName": "Fatima",
+        "lastName": "El Amrani",
+        "country": "Morocco",
         "countryPhoneCode": 212,
         "phone": 661234567,
-        "country": "Morocco"
+        "id": 10874584,
+        "birthDate": "1991-09-18"
     },
     {
-        "id": 118784152,
-        "firstname": "Liam",
-        "lastname": "O'Connor",
-        "birthDate": "1987-02-27",
+        "firstName": "Liam",
+        "lastName": "O'Connor",
+        "country": "Ireland",
         "countryPhoneCode": 353,
         "phone": 851234567,
-        "country": "Ireland"
+        "id": 118784152,
+        "birthDate": "1987-02-27"
     },
     {
-        "id": 127449631,
-        "firstname": "Chen",
-        "lastname": "Wei",
-        "birthDate": "1996-10-03",
+        "firstName": "Chen",
+        "lastName": "Wei",
+        "country": "China",
         "countryPhoneCode": 86,
         "phone": 13800138000,
-        "country": "China"
+        "id": 127449631,
+        "birthDate": "1996-10-03"
     }
 ]

@@ -176,6 +176,7 @@ public class AirportFrame extends javax.swing.JFrame {
             }
         });
     }
+
     private void addFlightComboBoxListener(JComboBox<String> comboBox) {
         comboBox.addPopupMenuListener(new PopupMenuListener() {
             @Override
@@ -195,6 +196,7 @@ public class AirportFrame extends javax.swing.JFrame {
             }
         });
     }
+
     private void addFlightByIdComboBoxListener(JComboBox<String> comboBox) {
         comboBox.addPopupMenuListener(new PopupMenuListener() {
             @Override
@@ -246,6 +248,7 @@ public class AirportFrame extends javax.swing.JFrame {
             comboBox.addItem(f.getId());
         }
     }
+
     public void fillFlightComboBoxByID(JComboBox<String> comboBox, List<Flight> flights) {
         comboBox.removeAllItems();
         comboBox.addItem("Select Flight");
@@ -1731,10 +1734,10 @@ public class AirportFrame extends javax.swing.JFrame {
         Response response = FlightController.createFlight(id, plane, scale, departure, arrival, departureDate, hoursDurationsArrival, minutesDurationsArrival, hoursDurationsScale, minutesDurationsScale);
         if (response.getStatus() == Status.CREATED) {
             if (scale == null) {
-                fillFlightComboBox(FlightToAddSelection,AirportController.getFlightsOrderedByDepartureDate());
+                fillFlightComboBox(FlightToAddSelection, AirportController.getFlightsOrderedByDepartureDate());
                 this.flights.add(new Flight(id, plane, departure, arrival, departureDate, hoursDurationsArrival, minutesDurationsArrival));
             } else {
-                fillFlightComboBox(FlightToAddSelection,AirportController.getFlightsOrderedByDepartureDate());
+                fillFlightComboBox(FlightToAddSelection, AirportController.getFlightsOrderedByDepartureDate());
                 this.flights.add(new Flight(id, plane, departure, scale, arrival, departureDate, hoursDurationsArrival, minutesDurationsArrival, hoursDurationsScale, minutesDurationsScale));
             }
         } else {
@@ -1769,23 +1772,7 @@ public class AirportFrame extends javax.swing.JFrame {
         long passengerId = Long.parseLong(addFromIDTextField.getText());
         String flightId = FlightToAddSelection.getItemAt(FlightToAddSelection.getSelectedIndex());
 
-        Passenger passenger = null;
-        Flight flight = null;
-
-        for (Passenger p : this.passengers) {
-            if (p.getId() == passengerId) {
-                passenger = p;
-            }
-        }
-
-        for (Flight f : this.flights) {
-            if (flightId.equals(f.getId())) {
-                flight = f;
-            }
-        }
-
-        passenger.addFlight(flight);
-        flight.addPassenger(passenger);
+        FlightController.addPassengerToFlight(passengerId, flightId);
     }//GEN-LAST:event_addToFlightButtonActionPerformed
 
     private void delayFlightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delayFlightButtonActionPerformed
@@ -1794,50 +1781,63 @@ public class AirportFrame extends javax.swing.JFrame {
         int hours = Integer.parseInt(hoursToDelaySelection.getItemAt(hoursToDelaySelection.getSelectedIndex()));
         int minutes = Integer.parseInt(minutesToDelaySelection.getItemAt(minutesToDelaySelection.getSelectedIndex()));
 
-        Flight flight = null;
-        for (Flight f : this.flights) {
-            if (flightId.equals(f.getId())) {
-                flight = f;
-            }
-        }
+        boolean success = FlightController.delayFlight(flightId, hours, minutes);
 
-        FlightService.delay(flight, hours, minutes);
+        if (!success) {
+            JOptionPane.showMessageDialog(this, "Flight not found: " + flightId, "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Flight delayed successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_delayFlightButtonActionPerformed
 
     private void refreshMyFlightsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshMyFlightsButtonActionPerformed
-        // TODO add your handling code here:
-        long passengerId = Long.parseLong(userSelect.getItemAt(userSelect.getSelectedIndex()));
 
-        Passenger passenger = null;
-        for (Passenger p : this.passengers) {
-            if (p.getId() == passengerId) {
-                passenger = p;
+        try {
+            long passengerId = Long.parseLong(userSelect.getItemAt(userSelect.getSelectedIndex()));
+            List<Object[]> flightData = AirportController.getFlightTableDataForPassenger(passengerId);
+
+            DefaultTableModel model = (DefaultTableModel) myFlightsTable.getModel();
+            model.setRowCount(0); // Limpiar
+            for (Object[] row : flightData) {
+                model.addRow(row);
             }
-        }
-
-        ArrayList<Flight> flights = passenger.getFlights();
-        DefaultTableModel model = (DefaultTableModel) myFlightsTable.getModel();
-        model.setRowCount(0);
-        for (Flight flight : flights) {
-            model.addRow(new Object[]{flight.getId(), flight.getDepartureDate(), FlightService.calculateArrivalDate(flight)});
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al actualizar vuelos del pasajero.");
         }
     }//GEN-LAST:event_refreshMyFlightsButtonActionPerformed
 
     private void refreshPassengersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshPassengersButtonActionPerformed
-        // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) passengersTable.getModel();
-        model.setRowCount(0);
-        for (Passenger passenger : this.passengers) {
-            model.addRow(new Object[]{passenger.getId(), passenger.getFullname(), passenger.getBirthDate(), passenger.calculateAge(), passenger.generateFullPhone(), passenger.getCountry(), passenger.getNumFlights()});
+        try {
+            List<Object[]> passengerData = AirportController.getAllPassengersTableData();
+            DefaultTableModel model = (DefaultTableModel) passengersTable.getModel();
+            model.setRowCount(0);
+            for (Object[] row : passengerData) {
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al cargar los pasajeros.");
         }
     }//GEN-LAST:event_refreshPassengersButtonActionPerformed
 
     private void refreshFlightsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshFlightsButtonActionPerformed
-        // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) flightsTable.getModel();
         model.setRowCount(0);
-        for (Flight flight : this.flights) {
-            model.addRow(new Object[]{flight.getId(), flight.getDepartureLocation().getAirportId(), flight.getArrivalLocation().getAirportId(), (flight.getScaleLocation() == null ? "-" : flight.getScaleLocation().getAirportId()), flight.getDepartureDate(), FlightService.calculateArrivalDate(flight), flight.getPlane().getId(), flight.getNumPassengers()});
+
+        List<Flight> orderedFlights = AirportController.getFlightsOrderedByDepartureDate();
+
+        for (Flight flight : orderedFlights) {
+            model.addRow(new Object[]{
+                flight.getId(),
+                flight.getDepartureLocation().getAirportId(),
+                flight.getArrivalLocation().getAirportId(),
+                (flight.getScaleLocation() == null ? "-" : flight.getScaleLocation().getAirportId()),
+                flight.getDepartureDate(),
+                FlightService.calculateArrivalDate(flight),
+                flight.getPlane().getId(),
+                flight.getNumPassengers()
+            });
         }
     }//GEN-LAST:event_refreshFlightsButtonActionPerformed
 
@@ -1845,8 +1845,18 @@ public class AirportFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) planesTable.getModel();
         model.setRowCount(0);
-        for (Plane plane : this.planes) {
-            model.addRow(new Object[]{plane.getId(), plane.getBrand(), plane.getModel(), plane.getMaxCapacity(), plane.getAirline(), plane.getNumFlights()});
+
+        List<Plane> orderedPlanes = AirportController.getPlanesOrderedById();
+
+        for (Plane plane : orderedPlanes) {
+            model.addRow(new Object[]{
+                plane.getId(),
+                plane.getBrand(),
+                plane.getModel(),
+                plane.getMaxCapacity(),
+                plane.getAirline(),
+                plane.getNumFlights()
+            });
         }
     }//GEN-LAST:event_refreshPlanesButtonActionPerformed
 
@@ -1854,8 +1864,15 @@ public class AirportFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) locationsTable.getModel();
         model.setRowCount(0);
-        for (Location location : this.locations) {
-            model.addRow(new Object[]{location.getAirportId(), location.getAirportName(), location.getAirportCity(), location.getAirportCountry()});
+
+        List<Location> orderedLocations = AirportController.getLocationsOrderedById();
+
+        for (Location location : orderedLocations) {
+            model.addRow(new Object[]{
+                location.getAirportId(),
+                location.getAirportName(),
+                location.getAirportCity(),
+                location.getAirportCountry(),});
         }
     }//GEN-LAST:event_refreshLocationsButtonActionPerformed
 

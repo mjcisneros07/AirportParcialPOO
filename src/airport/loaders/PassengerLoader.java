@@ -31,8 +31,8 @@ public class PassengerLoader {
                 JSONObject obj = arr.getJSONObject(i);
                 Passenger passenger = new Passenger(
                         obj.getLong("id"),
-                        obj.getString("firstname"),
-                        obj.getString("lastname"),
+                        obj.getString("firstName"),
+                        obj.getString("lastName"),
                         LocalDate.parse(obj.getString("birthDate")),
                         obj.getInt("countryPhoneCode"),
                         obj.getLong("phone"),

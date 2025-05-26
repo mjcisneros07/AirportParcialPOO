@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -72,19 +74,27 @@ public class PassengerStorage {
         return new ArrayList<>(this.passengers);
     }
     
-    public void saveAll(List<Passenger> passengers) {
-    try (PrintWriter writer = new PrintWriter(new FileWriter("passengers.txt", false))) {
-        for (Passenger p : passengers) {
-            writer.println(p.getId() + "," +
-                           p.getFirstname() + "," +
-                           p.getLastname() + "," +
-                           p.getBirthDate() + "," +
-                           p.getCountryPhoneCode() + "," +
-                           p.getPhone() + "," +
-                           p.getCountry());
+    public void saveAll(List<Passenger> passengers, String filename) {
+        JSONArray flightArray = new JSONArray();
+
+        for (Passenger passenger : passengers) {
+            JSONObject obj = new JSONObject();
+            obj.put("id", passenger.getId());
+            obj.put("firstName", passenger.getFirstname());
+            obj.put("lastName", passenger.getLastname());
+            obj.put("birthDate", passenger.getBirthDate());
+            obj.put("countryPhoneCode", passenger.getCountryPhoneCode());
+            obj.put("phone", passenger.getPhone());
+            obj.put("country", passenger.getCountry());
+
+
+            flightArray.put(obj);
         }
-    } catch (IOException e) {
-        e.printStackTrace();
+
+        try ( FileWriter file = new FileWriter(filename)) {
+            file.write(flightArray.toString(4)); // 4 es la indentación del JSON
+        } catch (IOException e) {
+            System.err.println("Error guardando pasajeros: " + e.getMessage());
+        }
     }
-}
 }

@@ -10,8 +10,10 @@ import airport.models.Location;
 import airport.models.Plane;
 import java.time.LocalDateTime;
 import airport.models.Flight;
+import airport.models.Passenger;
+import airport.models.services.FlightService;
 import airport.models.storage.FlightStorage;
-import java.util.List;
+import airport.models.storage.PassengerStorage;
 
 /**
  *
@@ -71,5 +73,35 @@ public class FlightController {
             return new Response("Unexpected error: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }
     }
+    public static void addPassengerToFlight(long passengerId, String flightId) {
+        Passenger passenger = PassengerStorage.getInstance().getPassenger(passengerId);
+        Flight flight = FlightStorage.getInstance().getFlight(flightId);
 
+        if (passenger != null && flight != null) {
+            if (!passenger.getFlights().contains(flight)) {
+                passenger.addFlight(flight);
+                flight.addPassenger(passenger);
+
+                // Guardar cambios
+                PassengerStorage.getInstance().saveAll(PassengerStorage.getInstance().getAll(), "src/data/passengers.json");
+                FlightStorage.getInstance().saveAll(FlightStorage.getInstance().getAll(), "src/data/flights.json");
+            } else {
+                // Ya está agregado
+                System.out.println("El pasajero ya está en el vuelo.");
+            }
+        }
+    }
+    public static boolean delayFlight(String flightId, int hours, int minutes) {
+        Flight flight = FlightStorage.getInstance().getAll().stream()
+                .filter(f -> f.getId().equals(flightId))
+                .findFirst()
+                .orElse(null);
+
+        if (flight == null) {
+            return false; // No encontró el vuelo
+        }
+
+        FlightService.delay(flight, hours, minutes);
+        return true;
+    }
 }

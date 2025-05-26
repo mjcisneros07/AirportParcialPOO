@@ -34,6 +34,6 @@ public class PassengerService {
             }
         }
 
-        PassengerStorage.getInstance().saveAll(passengers);
+        PassengerStorage.getInstance().saveAll(passengers, "src/data/passengers.json");
     }
 }
