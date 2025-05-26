@@ -5,11 +5,8 @@
 package airport.models.storage;
 
 import airport.models.Flight;
-import airport.models.Location;
-import airport.models.Passenger;
-import airport.models.Plane;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -65,5 +62,9 @@ public class FlightStorage {
             }
         }
         return false;
+    }
+    
+    public List<Flight> getAll(){
+        return new ArrayList<>(this.flights);
     }
 }

@@ -5,7 +5,11 @@
 package airport.models.storage;
 
 import airport.models.Passenger;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -64,4 +68,23 @@ public class PassengerStorage {
         }
         return false;
     }
+    public List<Passenger> getAll(){
+        return new ArrayList<>(this.passengers);
+    }
+    
+    public void saveAll(List<Passenger> passengers) {
+    try (PrintWriter writer = new PrintWriter(new FileWriter("passengers.txt", false))) {
+        for (Passenger p : passengers) {
+            writer.println(p.getId() + "," +
+                           p.getFirstname() + "," +
+                           p.getLastname() + "," +
+                           p.getBirthDate() + "," +
+                           p.getCountryPhoneCode() + "," +
+                           p.getPhone() + "," +
+                           p.getCountry());
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
 }

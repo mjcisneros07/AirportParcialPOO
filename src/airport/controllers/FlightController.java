@@ -18,7 +18,8 @@ import java.util.List;
  * @author cisne
  */
 public class FlightController {
-    public static Response createFlight(String id, Plane plane, Location departureLocation, Location arrivalLocation, LocalDateTime departureDate, int hoursDurationArrival, int minutesDurationArrival) {
+
+    public static Response createFlight(String id, Plane plane, Location scaleLocation, Location departureLocation, Location arrivalLocation, LocalDateTime departureDate, int hoursDurationArrival, int minutesDurationArrival, int hoursDurationScale, int minutesDurationScale) {
         try {
             // Validación de formato de ID
             if (!id.matches("^[A-Z]{3}[0-9]{3}$")) {
@@ -53,7 +54,12 @@ public class FlightController {
             }
 
             // Se crea el vuelo despues de las validaciones 
-            Flight flight = new Flight(id, plane, departureLocation, arrivalLocation, departureDate, hoursDurationArrival, minutesDurationArrival);
+            Flight flight;
+            if (scaleLocation == null) {
+                flight = new Flight(id, plane, departureLocation, arrivalLocation, departureDate, hoursDurationArrival, minutesDurationArrival);
+            } else{
+                flight = new Flight(id, plane, scaleLocation, departureLocation, arrivalLocation, departureDate, hoursDurationArrival, minutesDurationArrival, hoursDurationScale, minutesDurationScale);
+            }
             boolean añadido = flightStorage.addFlight(flight);
             if (!añadido) {
                 return new Response("Could not add flight", Status.INTERNAL_SERVER_ERROR);
@@ -65,4 +71,5 @@ public class FlightController {
             return new Response("Unexpected error: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }
     }
+
 }

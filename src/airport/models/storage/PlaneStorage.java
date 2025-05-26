@@ -4,8 +4,10 @@
  */
 package airport.models.storage;
 
+import airport.models.Flight;
 import airport.models.Plane;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -62,5 +64,8 @@ public class PlaneStorage {
             }
         }
         return false;
+    }
+    public List<Plane> getAll(){
+        return new ArrayList<>(this.planes);
     }
 }

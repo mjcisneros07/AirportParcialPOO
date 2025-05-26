@@ -7,6 +7,7 @@ package airport.controllers;
 import airport.controllers.utils.Response;
 import airport.controllers.utils.Status;
 import airport.models.Passenger;
+import airport.models.services.PassengerService;
 import airport.models.storage.PassengerStorage;
 
 /**
@@ -61,6 +62,9 @@ public class PassengerController {
         } catch (Exception ex) {
             return new Response("Unexpected error: " + ex.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }
+    }
+    public static void updatePassenger(Passenger updatedPassenger) {
+        PassengerService.updatePassenger(updatedPassenger);
     }
 
 }
